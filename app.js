@@ -132,25 +132,27 @@ console.log(isSort("[({})](]"));
 
 // 8.Longest Valid Bracket
 let countBrackets = str => {
-    let count = 0;
-  
-    for (const ch of str) {
-      if (ch === '(') {
-        count++;
-      } else if (ch == ')') {
-        count++;
-      }
-  
-      if (count < 0) {
-        return 0;
-      }
+    let maxLength = 0;
+    let stack = [];
+
+    for (let i = 0; i < str.length; i++) {
+        if (str[i] === '(') {
+            stack.push(i);
+        } else if (str[i] ===')') {
+            if (stack.length > 0) {
+                stack.pop();
+                let start = stack.length > 0 ? stack[stack.length - 1] : -1;
+                maxLength = Math.max(maxLength, i - start);
+            } else {
+                stack.push(i);
+            }
+        }
     }
-    return count === 0 ? str.length / 2 : 0;
+    return maxLength;
 }
-  
-console.log(countBrackets("(()")); // 2
-console.log(countBrackets(")()()")); // 4
-console.log(countBrackets("")); // 0
+console.log(countBrackets('(()'));
+console.log(countBrackets(')()()'));
+console.log(countBrackets(''));
   
 
 
